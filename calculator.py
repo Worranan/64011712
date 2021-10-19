@@ -1,29 +1,44 @@
+from abc import abstractclassmethod
 from PyQt5.QtWidgets import *
 
 class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
         # Your code here
+        self.c = ""
 
         self.layout1 = QVBoxLayout()
         self.setLayout(self.layout1)
 
-        # self.buttonAdd = QPushButton("1")
-        # self.buttonAdd.clicked.connect(self.show)
-        # self.layout1.addWidget(self.buttonAdd)
+        self.layout3 = QVBoxLayout()
+        self.labelResult = QLabel()
+        self.layout3.addWidget(self.labelResult)
+        self.layout1.addLayout(self.layout3)
 
-        self.layout2 = QVBoxLayout()
-        self.label1 = QLabel("1")
-        self.layout2.addWidget(self.label1)
-        self.layout1.addLayout(self.layout2)
+        self.layout4 = QVBoxLayout()
 
-    #     self.layout3 = QVBoxLayout()
-    #     self.labelResult = QLabel()
-    #     self.layout3.addWidget(self.labelResult)
-    #     self.layout1.addLayout(self.layout3)
 
-    # def show(self):
-    #     self.labelResult.setText("1")
+        self.buttonAdd1 = QPushButton("1")
+        self.buttonAdd1.resize(10,10)
+        self.buttonAdd1.clicked.connect(self.showing1)
+        self.layout4.addWidget(self.buttonAdd1)
+
+        self.buttonAdd2 = QPushButton("2")
+        self.buttonAdd2.clicked.connect(self.showing2)
+        self.layout4.addWidget(self.buttonAdd2)
+
+
+        self.layout1.addLayout(self.layout4)
+
+    def showing1(self):
+        self.a = 1
+        self.c += str(self.a)
+        self.labelResult.setText(self.c)
+
+    def showing2(self):
+        self.a = 2
+        self.c += str(self.a)
+        self.labelResult.setText(self.c)
 
     
 app = QApplication([])
