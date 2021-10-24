@@ -1,10 +1,9 @@
 from abc import abstractclassmethod
 from PyQt5.QtWidgets import *
 
-class MyWindow(QWidget):
+class MyWindow(QMainWindow, QWidget):
     def __init__(self):
         super().__init__()
-        # Your code here
         self.c = ""
 
         self.layout1 = QVBoxLayout()
@@ -17,7 +16,6 @@ class MyWindow(QWidget):
 
         self.layout3 = QVBoxLayout()
 
-
         self.buttonAdd1 = QPushButton("1")
         self.buttonAdd1.clicked.connect(self.showing1)
         self.layout3.addWidget(self.buttonAdd1)
@@ -26,8 +24,8 @@ class MyWindow(QWidget):
         self.buttonAdd2.clicked.connect(self.showing2)
         self.layout3.addWidget(self.buttonAdd2)
 
-
         self.layout1.addLayout(self.layout3)
+
 
     def showing1(self):
         self.a = 1
@@ -38,8 +36,8 @@ class MyWindow(QWidget):
         self.a = 2
         self.c += str(self.a)
         self.labelResult.setText(self.c)
+        
 
-    
 app = QApplication([])
 myWindow = MyWindow()
 myWindow.show()
