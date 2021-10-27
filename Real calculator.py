@@ -10,7 +10,9 @@ class MyWindow(QMainWindow):
 
         self.labelResult = QLabel(self)
         self.labelResult.setGeometry(25,25,(125*4)-25,100)
-        self.labelResult.setFont(QFont("Times", 30))
+        self.labelResult.setFont(QFont("Times", 25))
+
+
 
         
         g = 10
@@ -81,12 +83,13 @@ class MyWindow(QMainWindow):
                 self.c += str(i)
             self.labelResult.setText(self.c)
         else:
-            if  self.c[-1] == "+" and self.c[-1] == "-" and self.c[-1] == "*" and self.c[-1] == "/":
-                self.c = self.c[:len(self.c)-2] + str(i)
             if i == ".":
                 if "." not in self.c:
                     self.c += str(i)
                     self.labelResult.setText(self.c)
+            if  self.c[-1] == "+" or self.c[-1] == "-" or self.c[-1] == "*" or self.c[-1] == "/":
+                self.c = self.c[:len(self.c)-1] + str(i)
+                self.labelResult.setText(self.c)
             elif "+" in self.c or "-" in self.c or "*" or self.c or "/" or self.c:
                 self.equal()
                 self.c += i
@@ -114,6 +117,8 @@ class MyWindow(QMainWindow):
             self.c = str(float(f[0]) / float(f[1]))
             self.labelResult.setText(self.c)
         self.eq = "True"
+    # def cbut(self):
+
 
 
                 
