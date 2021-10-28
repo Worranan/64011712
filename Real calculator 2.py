@@ -5,7 +5,8 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Calculator")
-        self.resize(1000,1000)
+
+        self.resize(525 ,750)
         self.c = ""         #use for down line result
         self.s = ""         #use for up line result
 
@@ -111,25 +112,26 @@ class MyWindow(QMainWindow):
                 self.labelResult.setText(self.c)
         
     def sign(self,i): #check change sign
-        if self.num2 == "True":
-            self.equal()
-            self.s = self.c + str(i)
-            self.labelupResult.setText(self.s)
-            self.eq = "False"
-            self.num2 = "False"
-        elif self.eq == "True":
-            self.s = self.c + str(i)
-            self.labelupResult.setText(self.s)
-            self.eq = "False"
-        
-        elif self.num2 == "False":
-           self.s = self.c + str(i)
-           self.labelupResult.setText(self.s)
-        else:
-            self.equal
-            self.s = self.c + str(i)
-            self.labelupResult.setText(self.s)
-            self.num2 = "False"
+        if self.c != "" or self.s != "":
+            if self.num2 == "True":
+                self.equal()
+                self.s = self.c + str(i)
+                self.labelupResult.setText(self.s)
+                self.eq = "False"
+                self.num2 = "False"
+            elif self.eq == "True":
+                self.s = self.c + str(i)
+                self.labelupResult.setText(self.s)
+                self.eq = "False"
+            
+            elif self.num2 == "False":
+                self.s = self.c + str(i)
+                self.labelupResult.setText(self.s)
+            else:
+                self.equal
+                self.s = self.c + str(i)
+                self.labelupResult.setText(self.s)
+                self.num2 = "False"
 
     def equal(self):
         if "+" in self.s:
