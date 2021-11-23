@@ -31,7 +31,7 @@ class myWindow(QMainWindow):
                 buttons[str(i)+ " " + str(j)] = (i,j)
                 n = random.randint(0,3)
                 self.numcolor[i].append(n)
-                print(self.numcolor)
+                # print(self.numcolor)
 
         for btnText,pos in buttons.items():
             self.buttons[btnText] = QPushButton(btnText)
@@ -44,27 +44,43 @@ class myWindow(QMainWindow):
             
             
         self.generalLayout.addLayout(buttonsLayout)
+        for btnText, pos in buttons.items():
+            self.buttons[btnText].clicked.connect(lambda checked,g = btnText:self.but(g))
+    
+
+
+    def but(self, i):
+        a = i.split(" ")
+        self.check(int(a[0]), int(a[1]),self.numcolor[int(a[0])][int(a[1])] )
         
+        n = random.randint(0,3)
+        self.numcolor[int(a[0])][int(a[1])] = n
+        self.buttons[i].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(a[0])][int(a[1])]])
         
-        # self.button = QPushButton("Hello",self)
-        # self.button.setGeometry(100,100,100,100)
-        # self.button.clicked.connect(self.but)
-        # self.create
+    def check(self, fir, sec, numcolor): # try to change others around color
+        # if self.numcolor[fir][sec-1] == numcolor : #left
+        #     b = str(fir)+ " " + str(sec-1)
+        #     self.but(b)
+        # if self.numcolor[fir][sec+1] == numcolor : #right
+        #     b = str(fir)+ " " + str(sec+1)
+        #     self.but(b)
 
 
-        # self.button = {}
-        # row = range(0, 5)
-        # column = range(0,5)
-        # for each in row:
-        #     self.button[each] = QPushButton("row %d" %row, self)
-        #     n = random.randint(0,3)
-        #     self.button[each].setGeometry(100,100*each,100,100)
-        #     self.button[each].setStyleSheet("background-color: rgb" + self.color[n])
+
+        if self.numcolor[fir][sec-1] == numcolor : #left
+            b = str(fir)+ " " + str(sec-1)
+            n = random.randint(0,3)
+            self.numcolor[fir][sec-1] = n
+            self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec-1]])
+        if self.numcolor[fir][sec+1] == numcolor : #right
+            b = str(fir)+ " " + str(sec+1)
+            n = random.randint(0,3)
+            self.numcolor[fir][sec+1] = n
+            self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec+1]])
 
 
-    # def but(self):
-    #     n = random.randint(0,3)
-    #     self.button.setStyleSheet("background-color: rgb" + self.color[n])
+
+
 app = QApplication([])
 myWindow = myWindow()
 myWindow.show()
