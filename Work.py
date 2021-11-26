@@ -12,6 +12,7 @@ class myWindow(QMainWindow):
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
 
+        self.element = []
 
         self.color = ["(102,153,255)", "(255, 51, 153)", "(255, 153, 102)", "(51, 204, 51)"]
         self._createButtons()
@@ -53,11 +54,31 @@ class myWindow(QMainWindow):
         a = i.split(" ")
         self.check(int(a[0]), int(a[1]),self.numcolor[int(a[0])][int(a[1])] )
         
+        print(self.element)
+        
         n = random.randint(0,3)
         self.numcolor[int(a[0])][int(a[1])] = n
         self.buttons[i].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(a[0])][int(a[1])]])
         
     def check(self, fir, sec, numcolor): # try to change others around color
+        self.element.append(str(fir) + " " + str(sec))
+        if self.numcolor[fir][sec-1] == numcolor and str(fir) + " " + str(sec-1) not in self.element: #left
+            self.check(fir, sec-1, numcolor)
+        if self.numcolor[fir][sec+1] == numcolor and str(fir) + " " + str(sec+1) not in self.element: #left
+            self.check(fir, sec+1, numcolor)
+        if self.numcolor[fir-1][sec] == numcolor and str(fir-1) + " " + str(sec) not in self.element: #left
+            self.check(fir-1, sec, numcolor)
+        if self.numcolor[fir+1][sec] == numcolor and str(fir+1) + " " + str(sec) not in self.element: #left
+            self.check(fir+1, sec, numcolor)
+    #     self.change()
+    # def change(self):
+    #     for i in range(0,len(self.element)):
+    #         g = self.element[i].split(" ")
+    #         self.buttons[self.element(i)].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(g[0])][int(g[1])]])
+    #         self.element = []
+
+        
+
         # if self.numcolor[fir][sec-1] == numcolor : #left
         #     b = str(fir)+ " " + str(sec-1)
         #     self.but(b)
@@ -67,16 +88,16 @@ class myWindow(QMainWindow):
 
 
 
-        if self.numcolor[fir][sec-1] == numcolor : #left
-            b = str(fir)+ " " + str(sec-1)
-            n = random.randint(0,3)
-            self.numcolor[fir][sec-1] = n
-            self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec-1]])
-        if self.numcolor[fir][sec+1] == numcolor : #right
-            b = str(fir)+ " " + str(sec+1)
-            n = random.randint(0,3)
-            self.numcolor[fir][sec+1] = n
-            self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec+1]])
+        # if self.numcolor[fir][sec-1] == numcolor : #left
+        #     b = str(fir)+ " " + str(sec-1)
+        #     n = random.randint(0,3)
+        #     self.numcolor[fir][sec-1] = n
+        #     self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec-1]])
+        # if self.numcolor[fir][sec+1] == numcolor : #right
+        #     b = str(fir)+ " " + str(sec+1)
+        #     n = random.randint(0,3)
+        #     self.numcolor[fir][sec+1] = n
+        #     self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec+1]])
 
 
 
