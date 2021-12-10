@@ -17,22 +17,57 @@ class myWindow(QMainWindow):
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
 
-        
+
 
         self.element = []
 
         self.color = ["(102,153,255)", "(255, 51, 153)", "(255, 153, 102)", "(51, 204, 51)"]
-        
+
 
         self._createButtons()
+        self.score()
 
+
+    def score(self):
         self.score = 0
         self.resultscore = QLabel(str(self.score))
         self.resultscore.setFont(QFont("Times", 20))
         scorelayout = QHBoxLayout()
         scorelayout.addWidget(self.resultscore)
-        scorelayout.setContentsMargins(0, 0, 0, 0)
+        scorelayout.setContentsMargins(0, 0, 0, 0) #check agian
         self.generalLayout.addLayout(scorelayout)
+
+    def allcheck(self):
+        b = 0
+        for i in range(0,len(self.numcolor)):
+            for each2 in range(0, len(self.numcolor[i])):
+                self.check(i, each2,self.numcolor[i][each2])
+                print(len(self.element), i , each2)
+                if len(self.element) >=3:
+                    b += 1
+                    break
+                self.element = []
+            if b > 0:
+                break
+        self.element = []
+        print("\n")
+    
+        if b == 0:
+            self.numcolor = []
+            buttons = {}
+            for i in range(0, 9):
+
+                self.numcolor.append([])
+
+                for j in range(0, 9):
+                    buttons[str(i)+ " " + str(j)] = (i,j)
+                    n = random.randint(0,3)
+                    self.numcolor[i].append(n)
+                    # print(self.numcolor)
+
+            for btnText,pos in buttons.items():
+                self.buttons[btnText].setStyleSheet("background-color: rgb" + self.color[self.numcolor[pos[0]][pos[1]]])
+        b = 0
 
     def _createButtons(self):
         buttonsLayout = QGridLayout()
@@ -53,30 +88,32 @@ class myWindow(QMainWindow):
         for btnText,pos in buttons.items():
             self.buttons[btnText] = QPushButton(btnText)
             self.buttons[btnText].setFixedSize(100,100)
-            
-            
+
+
 
             self.buttons[btnText].setStyleSheet("background-color: rgb" + self.color[self.numcolor[pos[0]][pos[1]]])
             buttonsLayout.addWidget(self.buttons[btnText], pos[0], pos[1])
-            
+
         self.generalLayout.addLayout(buttonsLayout)
         for btnText, pos in buttons.items():
             self.buttons[btnText].clicked.connect(lambda checked,g = btnText:self.but(g))
-    
+
 
 
     def but(self, i):
         a = i.split(" ")
         self.check(int(a[0]), int(a[1]),self.numcolor[int(a[0])][int(a[1])] )
-        
-        print(self.element)
-        self.change()
 
-        
+        # print(self.element)
+        self.change()
+        self.allcheck()
+        # print(self.element)
+
+
         # n = random.randint(0,3)
         # self.numcolor[int(a[0])][int(a[1])] = n
         # self.buttons[i].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(a[0])][int(a[1])]])
-        
+
     def check(self, fir, sec, numcolor): # try to change others around color
         self.element.append(str(fir) + " " + str(sec))
         if 1 <= fir <=7 and 1<= sec <= 7:
@@ -148,6 +185,7 @@ class myWindow(QMainWindow):
             self.player.play()
             self.element = []
         else:
+            # print(self.element)
             full_file_path = os.path.join(os.getcwd(),"mixkit-game-balloon-or-bubble-pop-3069.wav" )
             url = QUrl.fromLocalFile(full_file_path)
             content = QMediaContent(url)
@@ -170,7 +208,7 @@ class myWindow(QMainWindow):
     #         self.buttons[self.element(i)].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(g[0])][int(g[1])]])
     #         self.element = []
 
-        
+
 
         # if self.numcolor[fir][sec-1] == numcolor : #left
         #     b = str(fir)+ " " + str(sec-1)
