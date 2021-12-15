@@ -26,23 +26,30 @@ class myWindow(QMainWindow):
 
         self._createButtons()
         self.score()
-
+        
 
     def score(self):
-        self.score = 0
-        self.resultscore = QLabel("Me : " + str(self.score))
+        self.score = {}
+        self.score["me"] = 0
+        self.score["bot"] = 0
+
+        self.resultscore = QLabel("Me : " + str(self.score["me"]))
         self.resultscore.setFont(QFont("Times", 20))
-        scorelayout = QHBoxLayout()
+        scorelayout = QVBoxLayout()
         scorelayout.addWidget(self.resultscore)
-        scorelayout.setContentsMargins(0, 0, 0, 0) #check agian
+        # scorelayout.setContentsMargins(0, 0, 0, 0) #check agian
         self.generalLayout.addLayout(scorelayout)
+        self.resultscorebot = QLabel("Bot : " + str(self.score["me"]))
+        self.resultscorebot.setFont(QFont("Times", 20))
+        scorelayout.addWidget(self.resultscorebot)
 
     def allcheck(self):
         b = 0
         for i in range(0,len(self.numcolor)):
             for each2 in range(0, len(self.numcolor[i])):
                 self.check(i, each2,self.numcolor[i][each2])
-                print(len(self.element), i , each2)
+                # print(len(self.element), i , each2)
+
                 if len(self.element) >=3:
                     b += 1
                     break
@@ -50,7 +57,7 @@ class myWindow(QMainWindow):
             if b > 0:
                 break
         self.element = []
-        print("\n")
+        # print("\n")
     
         if b == 0:
             self.numcolor = []
@@ -98,6 +105,21 @@ class myWindow(QMainWindow):
         for btnText, pos in buttons.items():
             self.buttons[btnText].clicked.connect(lambda checked,g = btnText:self.but(g))
 
+    def bot(self):
+        c = 0
+        while c < 3:
+            n1 = random.randint(0,8)
+            n2 = random.randint(0,8)
+            self.check(n1, n2,self.numcolor[n1][n2])
+            c = len(self.element)
+            self.element =[]
+        print(n1,n2)
+        self.check(n1,n2,self.numcolor[n1][n2])
+        self.score["bot"] += len(self.element)
+        self.change("bot")
+        print(self.score["bot"])
+        self.resultscorebot.setText("Bot : " + str(self.score["bot"]))
+
 
 
     def but(self, i):
@@ -105,7 +127,7 @@ class myWindow(QMainWindow):
         self.check(int(a[0]), int(a[1]),self.numcolor[int(a[0])][int(a[1])] )
 
         # print(self.element)
-        self.change()
+        self.change("me")
         self.allcheck()
         # print(self.element)
 
@@ -113,7 +135,8 @@ class myWindow(QMainWindow):
         # n = random.randint(0,3)
         # self.numcolor[int(a[0])][int(a[1])] = n
         # self.buttons[i].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(a[0])][int(a[1])]])
-
+        self.bot()
+        self.allcheck()
     def check(self, fir, sec, numcolor): # try to change others around color
         self.element.append(str(fir) + " " + str(sec))
         if 1 <= fir <=7 and 1<= sec <= 7:
@@ -175,7 +198,7 @@ class myWindow(QMainWindow):
                 self.check(fir-1, sec, numcolor)
             if self.numcolor[fir+1][sec] == numcolor and str(fir+1) + " " + str(sec) not in self.element: #left
                 self.check(fir+1, sec, numcolor)
-    def change(self):
+    def change(self,user):
         if len(self.element) < 3:
             full_file_path = os.path.join(os.getcwd(),"mixkit-exclamation-of-pain-from-a-zombie-2207.wav" )
             url = QUrl.fromLocalFile(full_file_path)
@@ -186,19 +209,21 @@ class myWindow(QMainWindow):
             self.element = []
         else:
             # print(self.element)
-            full_file_path = os.path.join(os.getcwd(),"mixkit-game-balloon-or-bubble-pop-3069.wav" )
-            url = QUrl.fromLocalFile(full_file_path)
-            content = QMediaContent(url)
-            self.player = QMediaPlayer()
-            self.player.setMedia(content)
-            self.player.play()
+            if user == "me":
+                full_file_path = os.path.join(os.getcwd(),"mixkit-game-balloon-or-bubble-pop-3069.wav" )
+                url = QUrl.fromLocalFile(full_file_path)
+                content = QMediaContent(url)
+                self.player = QMediaPlayer()
+                self.player.setMedia(content)
+                self.player.play()
             for i in range(0, len(self.element)):
                 g = self.element[i].split(" ")
                 n = random.randint(0,3)
                 self.numcolor[int(g[0])][int(g[1])] = n
                 self.buttons[self.element[i]].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(g[0])][int(g[1])]])
-            self.score += len(self.element)*1
-            self.resultscore.setText("Me : " + str(self.score))
+            if user == "me":
+                self.score["me"] += len(self.element)*1
+                self.resultscore.setText("Me : " + str(self.score["me"]))
             self.element = []
     # def score(self):
     #     self.change()

@@ -7,30 +7,39 @@ from PyQt5.QtWidgets import *
 import random
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
+from network import Network
+
+
 class myWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, numcolor, buttons):
         super().__init__()
+
         self.setWindowTitle("Break Game")
-        self.setGeometry(100, 50 , 800, 800)
+        # self.resize(1000, 775)
         self.generalLayout = QHBoxLayout()
         self._centralWidget = QWidget(self)
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
-
-
 
         self.element = []
 
         self.color = ["(102,153,255)", "(255, 51, 153)", "(255, 153, 102)", "(51, 204, 51)"]
 
 
-        self._createButtons()
+        self._createButtons(numcolor, buttons)
         self.score()
+        
+        
+        
 
-
+    def allchange(self, numcolor, buttons):
+        self.numcolor = numcolor
+        for btnText,pos in buttons.items():
+            self.buttons[btnText].setStyleSheet("background-color: rgb" + self.color[self.numcolor[pos[0]][pos[1]]])
+    
     def score(self):
         self.score = 0
-        self.resultscore = QLabel("Me : " + str(self.score))
+        self.resultscore = QLabel(str(self.score))
         self.resultscore.setFont(QFont("Times", 20))
         scorelayout = QHBoxLayout()
         scorelayout.addWidget(self.resultscore)
@@ -69,27 +78,15 @@ class myWindow(QMainWindow):
                 self.buttons[btnText].setStyleSheet("background-color: rgb" + self.color[self.numcolor[pos[0]][pos[1]]])
         b = 0
 
-    def _createButtons(self):
+    def _createButtons(self, numcolor, buttons):
         buttonsLayout = QGridLayout()
 
-        self.numcolor = []
+        self.numcolor = numcolor
         self.buttons = {}
-        buttons = {}
-        for i in range(0, 9):
-
-            self.numcolor.append([])
-
-            for j in range(0, 9):
-                buttons[str(i)+ " " + str(j)] = (i,j)
-                n = random.randint(0,3)
-                self.numcolor[i].append(n)
-                # print(self.numcolor)
 
         for btnText,pos in buttons.items():
-            self.buttons[btnText] = QPushButton()
+            self.buttons[btnText] = QPushButton(btnText)
             self.buttons[btnText].setFixedSize(100,100)
-
-
 
             self.buttons[btnText].setStyleSheet("background-color: rgb" + self.color[self.numcolor[pos[0]][pos[1]]])
             buttonsLayout.addWidget(self.buttons[btnText], pos[0], pos[1])
@@ -198,43 +195,16 @@ class myWindow(QMainWindow):
                 self.numcolor[int(g[0])][int(g[1])] = n
                 self.buttons[self.element[i]].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(g[0])][int(g[1])]])
             self.score += len(self.element)*1
-            self.resultscore.setText("Me : " + str(self.score))
+            self.resultscore.setText(str(self.score))
             self.element = []
-    # def score(self):
-    #     self.change()
-    # def change(self):
-    #     for i in range(0,len(self.element)):
-    #         g = self.element[i].split(" ")
-    #         self.buttons[self.element(i)].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(g[0])][int(g[1])]])
-    #         self.element = []
-
-
-
-        # if self.numcolor[fir][sec-1] == numcolor : #left
-        #     b = str(fir)+ " " + str(sec-1)
-        #     self.but(b)
-        # if self.numcolor[fir][sec+1] == numcolor : #right
-        #     b = str(fir)+ " " + str(sec+1)
-        #     self.but(b)
-
-
-
-        # if self.numcolor[fir][sec-1] == numcolor : #left
-        #     b = str(fir)+ " " + str(sec-1)
-        #     n = random.randint(0,3)
-        #     self.numcolor[fir][sec-1] = n
-        #     self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec-1]])
-        # if self.numcolor[fir][sec+1] == numcolor : #right
-        #     b = str(fir)+ " " + str(sec+1)
-        #     n = random.randint(0,3)
-        #     self.numcolor[fir][sec+1] = n
-        #     self.buttons[b].setStyleSheet("background-color: rgb" + self.color[self.numcolor[fir][sec+1]])
 
 
 
 
-# app = QApplication([])
-# myWindow = myWindow()
-# myWindow.show()
+numcolor, buttons = Network.first()
 
-# app.exec()
+app = QApplication([])
+myWindow = myWindow(numcolor, buttons)
+myWindow.show()
+
+app.exec()
