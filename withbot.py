@@ -113,11 +113,11 @@ class myWindow(QMainWindow):
             self.check(n1, n2,self.numcolor[n1][n2])
             c = len(self.element)
             self.element =[]
-        print(n1,n2)
+        # print(n1,n2)
         self.check(n1,n2,self.numcolor[n1][n2])
         self.score["bot"] += len(self.element)
         self.change("bot")
-        print(self.score["bot"])
+        # print(self.score["bot"])
         self.resultscorebot.setText("Bot : " + str(self.score["bot"]))
 
 
