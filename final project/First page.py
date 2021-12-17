@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 
 
 import Work
-import withbot
+import botMode
 import Howto
 
 class Window(QMainWindow):
@@ -43,7 +43,7 @@ class Window(QMainWindow):
         self.show()
 
     def secondPage(self):                       # +++
-        self.MewithbotWindow = withbot.myWindow()
+        self.MewithbotWindow = botMode.Window()
         self.MewithbotWindow.show()
     def thirdPage(self):
         self.MeWindow = Work.myWindow()

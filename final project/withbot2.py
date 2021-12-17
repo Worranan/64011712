@@ -8,20 +8,15 @@ import random
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 class myWindow(QMainWindow):
-    def __init__(self, level):
+    def __init__(self):
         super().__init__()
-        if level == "Easy":
-            self.setWindowTitle("Easy")
-        elif level == "Normal":
-            self.setWindowTitle("Normal")
-        elif level == "Hard":
-            self.setWindowTitle("Hard")
+        self.setWindowTitle("Break Game")
         self.setGeometry(100, 50 , 800, 800)
         self.generalLayout = QHBoxLayout()
         self._centralWidget = QWidget(self)
         self.setCentralWidget(self._centralWidget)
         self._centralWidget.setLayout(self.generalLayout)
-        self.level =level
+
 
 
         self.element = []
@@ -108,23 +103,9 @@ class myWindow(QMainWindow):
 
         self.generalLayout.addLayout(buttonsLayout)
         for btnText, pos in buttons.items():
-            self.buttons[btnText].clicked.connect(lambda checked,g = btnText:self.but(g, self.level))
+            self.buttons[btnText].clicked.connect(lambda checked,g = btnText:self.but(g))
 
-    def bot(self):
-        c = 0
-        while c < 3:
-            n1 = random.randint(0,8)
-            n2 = random.randint(0,8)
-            self.check(n1, n2,self.numcolor[n1][n2])
-            c = len(self.element)
-            self.element =[]
-        # print(n1,n2)
-        self.check(n1,n2,self.numcolor[n1][n2])
-        self.score["bot"] += len(self.element)
-        self.change("bot")
-        # print(self.score["bot"])
-        self.resultscorebot.setText("Bot : " + str(self.score["bot"]))
-    def botHard(self):  #reupdate!!!!
+    def bot(self):  #reupdate!!!!
         a = 0
     
         for i in range(0,9):
@@ -136,25 +117,17 @@ class myWindow(QMainWindow):
                     d = (i,j)
                 self.element = []
         self.check(d[0], d[1], self.numcolor[d[0]][d[1]])
-    
-        self.score["bot"] += len(self.element)
-        self.change("bot")
-        # print(self.score["bot"])
-        self.resultscorebot.setText("Bot : " + str(self.score["bot"]))
-
-
-    def botEasy(self):  #reupdate!!!!
-        a = 9*9
-    
-        for i in range(0,9):
-            for j in range(0,9):
-                self.check(i,j, self.numcolor[i][j])
-                c = len(self.element)
-                if 3 <= c < a:
-                    a = c
-                    d = (i,j)
-                self.element = []
-        self.check(d[0], d[1], self.numcolor[d[0]][d[1]])
+        '''
+        c = 0
+        while c < 3:
+            n1 = random.randint(0,8)
+            n2 = random.randint(0,8)
+            self.check(n1, n2,self.numcolor[n1][n2])
+            c = len(self.element)
+            self.element =[]
+        # print(n1,n2)
+        self.check(n1,n2,self.numcolor[n1][n2])
+        '''
 
         self.score["bot"] += len(self.element)
         self.change("bot")
@@ -163,7 +136,7 @@ class myWindow(QMainWindow):
 
 
 
-    def but(self, i, level):
+    def but(self, i):
         a = i.split(" ")
         self.check(int(a[0]), int(a[1]),self.numcolor[int(a[0])][int(a[1])] )
 
@@ -176,12 +149,7 @@ class myWindow(QMainWindow):
         # n = random.randint(0,3)
         # self.numcolor[int(a[0])][int(a[1])] = n
         # self.buttons[i].setStyleSheet("background-color: rgb" + self.color[self.numcolor[int(a[0])][int(a[1])]])
-        if self.level == "Normal":
-            self.bot()
-        elif self.level == "Easy":
-            self.botEasy()
-        elif self.level == "Hard":
-            self.botHard()
+        self.bot()
         self.allcheck()
     def check(self, fir, sec, numcolor): # try to change others around color
         self.element.append(str(fir) + " " + str(sec))
@@ -304,8 +272,8 @@ class myWindow(QMainWindow):
 
 
 
-# app = QApplication([])
-# myWindow = myWindow("Hard")
-# myWindow.show()
+app = QApplication([])
+myWindow = myWindow()
+myWindow.show()
 
-# app.exec()
+app.exec()

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
 import sys
- 
+
  
 class Window(QMainWindow):
     def __init__(self):
